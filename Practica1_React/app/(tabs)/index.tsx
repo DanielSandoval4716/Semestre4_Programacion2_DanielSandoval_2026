@@ -1,32 +1,56 @@
-import { View, Text, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  Platform,
+  Alert,
+} from "react-native";
+
+function saludar() {
+  const mens =
+    "El repositorio de GitHub es: https://github.com/DanielSandoval4716/Semestre4_Programacion2_DanielSandoval_2026";
+  if (Platform.OS == "web") {
+    window.alert(mens);
+  } else {
+    Alert.alert(mens);
+  }
+}
 
 export default function StudentCardScreen() {
   return (
-    <View style={styles.cont}>
-      <View style={styles.foto}>
-        <Text style={styles.titulo}>pendiente la foto</Text>
-      </View>
+    <View style={styles.princiapl}>
+      <Image
+        style={styles.foto}
+        source={{
+          uri: "https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg",
+        }}
+      ></Image>
 
       <View style={styles.ca}>
-        <Text style={styles.titulo}>Nombre</Text>
+        <Text style={styles.titulo}>Daniel Estuardo Sandoval Torres</Text>
 
         <View style={styles.info_fila}>
           <Text style={styles.text_fila}>Carné:</Text>
-          <Text style={styles.text_fila}>Prueba</Text>
+          <Text style={styles.text_fila}>0907-25-11351</Text>
         </View>
 
         <View style={styles.info_fila}>
           <Text style={styles.text_fila}>Carrera:</Text>
-          <Text style={styles.text_fila}>Prueba</Text>
+          <Text style={styles.text_fila}>Ingenieria en Sistemas</Text>
         </View>
 
         <View style={styles.descripcont}>
           <Text style={styles.text_fila}>Descripción:</Text>
-          <Text style={styles.text_fila}>Prueba</Text>
+          <Text style={styles.text_fila}>
+            Soy un alumno de universidad mariano Galvez sede Jalapa, actualmente
+            cursando la carrera de ingenieria en Sistemas.
+          </Text>
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button title="Ver más" onPress={() => {}} />
+          <Button title="Ver más" onPress={() => saludar()} />
         </View>
       </View>
     </View>
@@ -34,7 +58,7 @@ export default function StudentCardScreen() {
 }
 
 const styles = StyleSheet.create({
-  cont: {
+  princiapl: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -44,15 +68,15 @@ const styles = StyleSheet.create({
     width: "50%",
     padding: 20,
     margin: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
+    borderWidth: 3,
+    borderColor: "black",
     borderRadius: 10,
   },
   foto: {
+    width: "10%",
+    height: "18%",
     padding: 10,
     margin: 10,
-    borderWidth: 1,
-    borderColor: "#999",
   },
   titulo: {
     fontSize: 18,
