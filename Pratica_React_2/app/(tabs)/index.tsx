@@ -5,30 +5,81 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Platform,
   Alert,
   ScrollView,
 } from "react-native";
+import { useState } from "react";
+
 export default function HomeScreen() {
-  const tareas = [
-    { id: "1", titulo: "Tarea 1", descripcion: "Descripción de la tarea 1" },
-  ];
+  const [Tar, cTar] = useState([]);
+  const [texto1, cte1] = useState("");
+  const [texto2, cte2] = useState("");
+  const [View_tareas, cVT] = useState(false);
+  let formulario, botonsito;
+  function Guardar(No, Nombre) {
+    const tarea = {
+      id: Tar.length + 1,
+      Descri: No,
+      Nombre: Nombre,
+    };
+    cTar([...Tar, tarea]);
+    cte2("");
+    cte2("");
+  }
+  if (View_tareas) {
+    botonsito = (
+      <Button title="Guardar" onPress={() => Guardar(texto1, texto2)}></Button>
+    );
+    formulario = (
+      <View style={styles.formulario}>
+        <View style={styles.entradas}>
+          <TextInput
+            style={styles.input}
+            value={texto2}
+            onChangeText={cte2}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            value={texto1}
+            onChangeText={cte1}
+          ></TextInput>
+        </View>
+        <View style={styles.entradas}>
+          <Text style={styles.acomp_inpu}>Nombre</Text>
+          <Text style={styles.acomp_inpu}>Descripcion</Text>
+        </View>
+      </View>
+    );
+  } else {
+    formulario = null;
+    botonsito = (
+      <Button title="Nueva Tarea" onPress={() => cVT(!View_tareas)}></Button>
+    );
+  }
   return (
     <ScrollView style={styles.principal}>
       <View style={styles.parte_superior}>
-        <Button title="nueva tarea"></Button>
-        <TextInput style={styles.input}></TextInput>
+        <View>{botonsito}</View>
+        {formulario}
       </View>
       <View style={styles.parte_inferior}>
         <FlatList
-          data={tareas}
-          keyExtractor={(tarea) => tarea.id}
+          ListEmptyComponent={() => {
+            return (
+              <View>
+                <Text style={styles.titulo}>No hay tareas</Text>
+              </View>
+            );
+          }}
+          data={Tar}
+          keyExtractor={(tarea) => tarea.id.toString()}
           renderItem={(tarea) => {
             return (
               <View style={styles.info_fila}>
                 <Text style={styles.text_fila}>{tarea.item.id}</Text>
-                <Text style={styles.text_fila}>{tarea.item.titulo}</Text>
-                <Text style={styles.text_fila}>{tarea.item.descripcion}</Text>
+                <Text style={styles.text_fila}>{tarea.item.Nombre}</Text>
+                <Text style={styles.text_fila}>{tarea.item.Descri}</Text>
+                <Button title="Eliminar Tarea"></Button>
               </View>
             );
           }}
@@ -51,6 +102,15 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 10,
   },
+  entradas: {
+    width: "50%",
+    padding: 20,
+    flexDirection: "column",
+  },
+  formulario: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
   input: {
     padding: 10,
     margin: 10,
@@ -58,9 +118,10 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 10,
   },
-  botonsito: {
+  acomp_inpu: {
     padding: 10,
     margin: 10,
+    fontSize: 17,
   },
   parte_inferior: {
     padding: 20,
@@ -82,11 +143,5 @@ const styles = StyleSheet.create({
   },
   text_fila: {
     fontSize: 17,
-  },
-  descripcont: {
-    padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: "white",
   },
 });
