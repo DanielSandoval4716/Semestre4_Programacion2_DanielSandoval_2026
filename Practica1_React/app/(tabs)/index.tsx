@@ -18,7 +18,7 @@ function saludar() {
   }
 }
 
-export default function StudentCardScreen() {
+export default function Carta_estudiante() {
   return (
     <View style={styles.princiapl}>
       <Image
