@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   ScrollView,
+  Platform,
 } from "react-native";
 import { useState } from "react";
 
@@ -14,6 +15,22 @@ export default function HomeScreen() {
   const [Tar, cTar] = useState([]);
   const [texto1, cte1] = useState("");
   const [texto2, cte2] = useState("");
+  const eli_tar = (id) => {
+    if (Platform.OS === "web") {
+      const conf = window.confirm("eliminar la tarea?");
+      if (conf) {
+        cTar(Tar.filter((tarea) => tarea.id !== id));
+      }
+    } else {
+      Alert.alert("eliminar tarea", "eliminar la tarea?", [
+        { text: "cancelar" },
+        {
+          text: "eliminar",
+          onPress: () => cTar(Tar.filter((tarea) => tarea.id !== id)),
+        },
+      ]);
+    }
+  };
   const [View_tareas, cVT] = useState(false);
   let formulario, botonsito;
   function Guardar(No, Nombre) {
@@ -24,7 +41,7 @@ export default function HomeScreen() {
     };
     cTar([...Tar, tarea]);
     cte2("");
-    cte2("");
+    cte1("");
   }
   if (View_tareas) {
     botonsito = (
@@ -79,7 +96,10 @@ export default function HomeScreen() {
                 <Text style={styles.text_fila}>{tarea.item.id}</Text>
                 <Text style={styles.text_fila}>{tarea.item.Nombre}</Text>
                 <Text style={styles.text_fila}>{tarea.item.Descri}</Text>
-                <Button title="Eliminar Tarea"></Button>
+                <Button
+                  title="Eliminar Tarea"
+                  onPress={() => eli_tar(tarea.item.id)}
+                ></Button>
               </View>
             );
           }}
