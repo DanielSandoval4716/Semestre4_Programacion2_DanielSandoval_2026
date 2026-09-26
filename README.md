@@ -6,3 +6,7 @@ enlace drive video: https://drive.google.com/file/d/16dWlwSEb-YNZHE0Zfv4jT_59zIe
 
 Tarea 2:
 Practica React Native 2 (Listas, efectos y eventos), Carpeta Practica_React2, las indicaciones no pedian video, ni capturas
+
+Parcial1:
+Carpeta Parcial1/sesion7, aplicacion aplicada con supabase, Nombre, Fecha, Responsable con patron repositorio
+imagenes adjuntas en la carpeta /Imagenes_Parcial
