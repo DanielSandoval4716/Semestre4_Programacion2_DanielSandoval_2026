@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-type Persona = {
+type Tarea = {
   id: number;
   nombre: string;
   Fecha: string;
@@ -25,18 +25,18 @@ type Persona = {
 export default function PersoScreen() {
   const theme = useTheme();
 
-  const [personas, setPersonas] = useState<Persona[]>([]);
+  const [tarea, setTarea] = useState<Tarea[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Estado del formulario que aparece en el Modal
   const [modalVisible, setModalVisible] = useState(false);
-  const [persoEdit, setPersoEdit] = useState<Persona | null>(null);
+  const [tareaEdit, setTareaEdit] = useState<Tarea | null>(null);
   const [nombre, setNombre] = useState('');
   const [Fecha, setFecha] = useState('');
   const [Responsable, setRes] = useState('');
   const [guardando, setGuardando] = useState(false);
 
-  const cargarProducts = async () => {
+  const cargarTareas = async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase.from('Persona').select('*').order('id');
@@ -47,7 +47,7 @@ export default function PersoScreen() {
       }
 
       // Supabase devuelve las filas sin tipos, así que las casteamos.
-      setPersonas((data ?? []) as Persona[]);
+      setTarea((data ?? []) as Tarea[]);
     } catch (err) {
       Alert.alert('Ha ocurrido un error', err instanceof Error ? err.message : String(err));
     } finally {
@@ -56,26 +56,26 @@ export default function PersoScreen() {
   };
 
   useEffect(() => {
-    cargarProducts();
+    cargarTareas();
   }, []);
 
   const abrirNuevo = () => {
-    setPersoEdit(null);
+    setTareaEdit(null);
     setNombre('');
     setFecha('');
     setRes('');
     setModalVisible(true);
   };
 
-  const abrirEdicion = (producto: Persona) => {
-    setPersoEdit(producto);
+  const abrirEdicion = (producto: Tarea) => {
+    setTareaEdit(producto);
     setNombre(producto.nombre);
     setFecha(producto.Fecha);
     setRes(String(producto.Responsable));
     setModalVisible(true);
   };
 
-  const guardarPersona = async () => {
+  const guardarTarea = async () => {
     if (!nombre.trim() || !Fecha.trim()|| !Responsable.trim()) {
       Alert.alert('Datos incompletos');
       return;
@@ -89,8 +89,8 @@ export default function PersoScreen() {
       };
 
       // Si hay un producto en edición hacemos UPDATE, si no, INSERT.
-      const resultado = persoEdit
-        ? await supabase.from('Persona').update(datos).eq('id', persoEdit.id)
+      const resultado = tareaEdit
+        ? await supabase.from('Persona').update(datos).eq('id', tareaEdit.id)
         : await supabase.from('Persona').insert(datos);
 
       if (resultado.error) {
@@ -99,7 +99,7 @@ export default function PersoScreen() {
       }
 
       setModalVisible(false);
-      cargarProducts();
+      cargarTareas();
     } catch (err) {
       Alert.alert('Ha ocurrido un error', err instanceof Error ? err.message : String(err));
     } finally {
@@ -107,7 +107,7 @@ export default function PersoScreen() {
     }
   };
 
-  const eliminarPerso = async (producto: Persona) => {
+  const eliminarTarea = async (producto: Tarea) => {
     try {
       const { error } = await supabase.from('Persona').delete().eq('id', producto.id);
 
@@ -116,28 +116,28 @@ export default function PersoScreen() {
         return;
       }
 
-      setPersonas((prev) => prev.filter((item) => item.id !== producto.id));
+      setTarea((prev) => prev.filter((item) => item.id !== producto.id));
     } catch (err) {
       Alert.alert('Ha ocurrido un error', err instanceof Error ? err.message : String(err));
     }
   };
 
-  const confirmarEliminacion = (persona: Persona) => {
+  const confirmarEliminacion = (persona: Tarea) => {
     // En web, Alert.alert no muestra diálogos; usamos el confirm del navegador.
     if (typeof window !== 'undefined' && typeof window.confirm === 'function') {
       if (window.confirm(`¿Deseas eliminar "${persona.nombre}"?`)) {
-        eliminarPerso(persona);
+        eliminarTarea(persona);
       }
       return;
     }
 
     Alert.alert('Eliminar tarea', `¿Deseas eliminar la tarea: "${persona.nombre}"?`, [
       { text: 'Cancelar', style: 'cancel' },
-      { text: 'Eliminar', style: 'destructive', onPress: () => eliminarPerso(persona) },
+      { text: 'Eliminar', style: 'destructive', onPress: () => eliminarTarea(persona) },
     ]);
   };
 
-  const renderItem = ({ item }: { item: Persona }) => (
+  const renderItem = ({ item }: { item: Tarea }) => (
     <ThemedView type="backgroundElement" style={styles.card}>
       <ThemedView type="backgroundElement" style={styles.cardInfo}>
         <ThemedText type="smallBold">{item.nombre}</ThemedText>
@@ -183,13 +183,13 @@ export default function PersoScreen() {
           <ThemedText type="small" themeColor="textSecondary" style={styles.emptyText}>
             Cargando tareas…
           </ThemedText>
-        ) : personas.length === 0 ? (
+        ) : tarea.length === 0 ? (
           <ThemedText type="small" themeColor="textSecondary" style={styles.emptyText}>
             No hay tareas registrados.
           </ThemedText>
         ) : (
           <FlatList
-            data={personas}
+            data={tarea}
             keyExtractor={(item) => String(item.id)}
             renderItem={renderItem}
             contentContainerStyle={styles.listContent}
@@ -205,7 +205,7 @@ export default function PersoScreen() {
         <View style={styles.modalOverlay}>
           <ThemedView type="backgroundElement" style={styles.modalCard}>
             <ThemedText type="subtitle">
-              {persoEdit ? 'Editar producto' : 'Nuevo producto'}
+              {tareaEdit ? 'Editar producto' : 'Nuevo producto'}
             </ThemedText>
 
             <ThemedView type="backgroundElement" style={styles.field}>
@@ -242,7 +242,7 @@ export default function PersoScreen() {
               />
             </ThemedView>
 
-            <Pressable disabled={guardando} style={({ pressed }) => pressed && styles.pressed} onPress={guardarPersona}>
+            <Pressable disabled={guardando} style={({ pressed }) => pressed && styles.pressed} onPress={guardarTarea}>
               <ThemedView type="backgroundSelected" style={styles.saveButton}>
                 <ThemedText type="small" style={styles.saveButtonText}>
                   {guardando ? 'Guardando…' : 'Guardar producto'}
