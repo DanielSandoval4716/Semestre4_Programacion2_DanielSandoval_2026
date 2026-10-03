@@ -10,3 +10,12 @@ Practica React Native 2 (Listas, efectos y eventos), Carpeta Practica_React2, la
 Parcial1:
 Carpeta Parcial1/sesion7, aplicacion aplicada con supabase, Nombre, Fecha, Responsable con patron repositorio
 imagenes adjuntas en la carpeta /Imagenes_Parcial
+
+MEJORA CRUD:
+Carpeta sesion7, se agrego un CRUD para otra Tabla "Estudiantes", el .env no esta subido, la estructura de la tabla es:
+tabl estudiantes
+id primary key
+nombre text not null,
+email text not null,
+carrera text not null
+No habia indicaciones sobre que hacer, asi que se realizo el CRUD para Estudiantes.
