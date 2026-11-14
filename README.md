@@ -19,3 +19,5 @@ nombre text not null,
 email text not null,
 carrera text not null
 No habia indicaciones sobre que hacer, asi que se realizo el CRUD para Estudiantes.
+prueba git.
+
